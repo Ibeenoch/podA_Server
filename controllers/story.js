@@ -1,4 +1,4 @@
-import { uploader, videoUploader } from "../middleware/cloudinaryUpload.js";
+import { uploader, audioUploader } from "../middleware/cloudinaryUpload.js";
 import { Story } from "../model/story.js";
 import { User } from "../model/user.js";
 
@@ -24,7 +24,7 @@ export const addStory = async(req, res) => {
                }
 
                if(file && file.fieldname && file.fieldname === 'video'){
-                 const filepath = await videoUploader(path);
+                 const filepath = await audioUploader(path);
                  videourls.push(filepath);
                  uploaded = true;
                }  

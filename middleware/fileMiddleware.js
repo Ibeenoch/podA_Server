@@ -4,8 +4,8 @@ const fileStorage = multer.diskStorage({
     destination: function(req, file, cb) {
         if(file.mimetype.startsWith('image/')){
             cb(null, './images/');
-        }else if(file.mimetype.startsWith('video/') ){
-            cb(null, './videos/');
+        }else if(file.mimetype.startsWith('audio/') ){
+            cb(null, './audio/');
         }else{
             cb({ message: 'this file is not supported'})
         }

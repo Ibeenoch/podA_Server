@@ -14,7 +14,7 @@ export const uploader = async (file ) => {
     return result;
 }
 
-export const videoUploader = async (file ) => {
+export const audioUploader = async (file ) => {
     var result = await cloudinary.uploader.upload(file, { resource_type: 'video'});
     console.log('image uploaded: ', result);
     return result;
