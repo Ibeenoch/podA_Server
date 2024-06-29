@@ -8,6 +8,7 @@ import { uploader } from '../middleware/cloudinaryUpload.js';
 import userRouter from '../routes/user.js';
 import { sendEmail } from '../utils/mail.js';
 import { verificationMail } from '../utils/verificationmail.js';
+import { passwordRecovery } from '../utils/resetPassword.js';
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_TOKEN, { expiresIn: '1d' });
@@ -37,7 +38,7 @@ try {
     const hashPassword = await bcrypt.hash(password, genSalt)
 
     const newuser = await User.create({
-        email, password: hashPassword
+        email, password: hashPassword, fullname
     })
 
 
@@ -158,44 +159,10 @@ export const recoveryEmailLink = async (req, res) => {
       return;
     }
 
-    const id = user._id;
-      // send email verification
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        logger: true,
-        debug: true,
-        auth: {
-          user: "fredenoch1@gmail.com",
-          pass: process.env.GOOGLEAPPPASS,
-        },
-        tls: {
-          rejectUnauthorized: true,
-        },
-      });
+      // send password recovery mail    
+    await sendEmail(email, 'Password Recovery', passwordRecovery(user.fullname, user._id));
+  
 
-      const link = `http://localhost:3000/password/reset/${id}`;
-      const mailOptions = {
-        from: "fredenoch1@gmail.com",
-        to: email,
-        subject: "Reset Your Password",
-        html: `<h2>You Can't Remember Your Password </h2>
-            <h3>You forgot your password ? don't worry we can help you reset them </h3>
-            <h3></h3>
-            <p> Click on this link to reset your password ${link} </p>
-            <p>Or Click on the button below,to reset your password</p>
-             <a href="${link}" >
-            <button style="background-color: black; color: white; padding: 5px;" > Reset Password </button>
-            </a>
-            `,
-      };
-
-      transporter.sendMail(mailOptions, async (error, info) => {
-        if (!error) {
-        // console.log(info.response)
-        }
-      });
       console.log('email send ', user)
       res.status(200).json({ message: 'Password Recovery Sent' });
 

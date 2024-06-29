@@ -1,5 +1,5 @@
 
-export const verificationMail = (name) => {
+export const passwordRecovery = (name, id) => {
     const mailSend =  `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -46,22 +46,21 @@ export const verificationMail = (name) => {
         color: #777;
       }
     </style>
-    <title>Email Verification</title>
+    <title>Password Recovery</title>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h1>Welcome to PodA!</h1>
+        <h1>Password Recovery</h1>
       </div>
       <div class="content">
         <p>Hi ${name},</p>
         <p>
-          Thank you for registering with PodA. Please verify your email address
-          by clicking the button below:
+          We received a request to reset your password. Click the button below to reset it:
         </p>
-        <a href="<%= verificationLink %>" class="button">Verify Email</a>
+        <a href="http://localhost:3000/password/recovery/${id}" class="button">Reset Password</a>
         <p>
-          If you did not sign up for this account, you can ignore this email.
+          If you did not request a password reset, please ignore this email or contact support.
         </p>
         <p>Thank you,<br />The PodA Team</p>
       </div>
@@ -71,7 +70,6 @@ export const verificationMail = (name) => {
     </div>
   </body>
 </html>
-
 `
 return mailSend;
 }
